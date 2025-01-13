@@ -55,3 +55,20 @@ function displayMatchingEpisodes() {
     filterEpisodeBySearch(episodeListItems, liveSearchInput);
   });
 }
+
+function filterEpisodeBySearch(episodeListItems, liveSearchInput) {
+  const liveSearchInputValue = liveSearchInput.value.toLowerCase();
+  let countMatch = 0;
+  episodeListItems.forEach((episode) => {
+    const episodeContent = episode.textContent.toLowerCase();
+    if (episodeContent.includes(liveSearchInputValue)) {
+      countMatch++;
+      const episodeMatch = document.querySelector("#episode-match-number");
+      const matchMsg = `Displaying: ${countMatch}/${episodeListItems.length} episode (s)`;
+      episodeMatch.textContent = matchMsg;
+      episode.classList.remove("hidden-card");
+    } else {
+      episode.classList.add("hidden-card");
+    }
+  });
+}
