@@ -1,104 +1,99 @@
-function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+let allEpisodes = []; // Store all episodes globally for reuse throughout the script
 
-  displayMatchingEpisodes();
-  makeListOfEpisodeToSelect(allEpisodes);
+// Utility function to pad numbers with leading zeros (e.g., 1 becomes 01)
+function padNumber(number) {
+  return number.toString().padStart(2, '0');
 }
 
-function addZero(num) {
-  return num < 10 ? `0${num}` : num;
+// Generate HTML structure for an individual episode card
+function generateEpisodeHTML(episode) {
+  // Format the episode number as S01E01
+  const episodeNumber = `S${padNumber(episode.season)}E${padNumber(episode.number)}`;
+
+  // Return an HTML template string for the episode card
+  return `
+    <article class="episode-card">
+        <div class="episode-badge">${episodeNumber}</div>
+        <img src="${episode.image.medium}" alt="${episode.name}">
+        <div class="episode-content">
+            <h2>${episode.name}</h2>
+            <p>${episode.summary}</p>
+        </div>
+    </article>`;
 }
 
-function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  const episodeCards = episodeList.map(createEpisodeCards);
-  rootElem.append(...episodeCards);
+// Render the list of episodes on the page
+function renderEpisodes(episodesToDisplay) {
+  // Select the container for the episodes grid
+  const episodesGrid = document.getElementById('episodes-grid');
+
+  // Generate HTML for all episodes to be displayed and update the grid
+  episodesGrid.innerHTML = episodesToDisplay.map(generateEpisodeHTML).join('');
+
+  // Update the search result count (e.g., "Showing 3 out of 73 episodes")
+  const searchResult = document.getElementById('search-result');
+  searchResult.textContent = `Showing ${episodesToDisplay.length} out of ${allEpisodes.length} episodes`;
 }
 
-function createEpisodeCards(episode) {
-  const newCard = document.createElement("div");
-  newCard.classList.add("card");
-  newCard.innerHTML = `<div class = "title-card">${episode.name} - S${addZero(
-    episode.season
-  )}E${addZero(episode.number)}</div>;
-    <img src="${episode.image.medium}" alt="${episode.name}" />
-    <p>${episode.summary}</p>`;
-  return newCard;
+// Filter episodes based on the search input
+function filterEpisodes(event) {
+  // Get the search term from the input and convert it to lowercase
+  const searchTerm = event.target.value.toLowerCase();
+
+  // Filter episodes where the name or summary includes the search term
+  const filteredEpisodes = allEpisodes.filter(episode =>
+    episode.name.toLowerCase().includes(searchTerm) ||
+    episode.summary.toLowerCase().includes(searchTerm)
+  );
+
+  // Render only the filtered episodes
+  renderEpisodes(filteredEpisodes);
 }
 
-function displayMatchingEpisodes() {
-  const liveSearchInput = document.querySelector("#live-search");
-  const episodeListItems = document.querySelectorAll(".card");
-  liveSearchInput.addEventListener("input", () => {
-    filterEpisodeBySearch(episodeListItems, liveSearchInput);
+// Populate the episode selector dropdown with all episodes
+function populateEpisodeSelector() {
+  // Select the dropdown element
+  const episodeSelector = document.getElementById('episode-selector');
+
+  // Clear the existing options and add a default "Select an Episode" option
+  episodeSelector.innerHTML = '<option value="">Select an Episode</option>';
+
+  // Add an option for each episode with formatted text and value
+  allEpisodes.forEach(episode => {
+    const episodeNumber = `S${padNumber(episode.season)}E${padNumber(episode.number)}`;
+    const option = document.createElement('option');
+    option.value = episode.id; // Use the episode ID as the value
+    option.textContent = `${episodeNumber} - ${episode.name}`; // Display formatted episode details
+    episodeSelector.appendChild(option);
   });
 }
 
-function filterEpisodeBySearch(episodeListItems, liveSearchInput) {
-  const liveSearchInputValue = liveSearchInput.value.toLowerCase();
-  let countMatch = 0;
-  episodeListItems.forEach((episode) => {
-    const episodeContent = episode.textContent.toLowerCase();
-    if (episodeContent.includes(liveSearchInputValue)) {
-      countMatch++;
-      const episodeMatch = document.querySelector("#episode-match-number");
-      const matchMsg = `Displaying: ${countMatch}/${episodeListItems.length} episode (s)`;
-      episodeMatch.textContent = matchMsg;
-      episode.classList.remove("hidden-card");
-    } else {
-      episode.classList.add("hidden-card");
-    }
-  });
+// Handle the selection of an episode from the dropdown
+function handleEpisodeSelection(event) {
+  // Get the selected episode ID from the dropdown
+  const selectedEpisodeId = event.target.value;
+
+  if (selectedEpisodeId) {
+    // Find the selected episode by ID and render only that episode
+    const selectedEpisode = allEpisodes.find(episode => episode.id === Number(selectedEpisodeId));
+    renderEpisodes([selectedEpisode]);
+  } else {
+    // If no specific episode is selected, render all episodes
+    renderEpisodes(allEpisodes);
+  }
 }
 
-//===============Episode Selector creation Feature============================
-const episodeSelectorTemplate = document.querySelector(
-  "#episode-selector-temp"
-);
-const episodeSelectorTemplateClone =
-  episodeSelectorTemplate.content.cloneNode(true);
-//insert selector template before live search
-document.body.insertBefore(
-  episodeSelectorTemplateClone,
-  document.querySelector("#live-search")
-);
+// Set up the page once the DOM content is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  allEpisodes = getAllEpisodes(); // Load all episodes using the helper function
+  renderEpisodes(allEpisodes); // Display all episodes initially
+  populateEpisodeSelector(); // Populate the dropdown with episodes
 
-const episodeSelector = document.querySelector("#episode-selector");
+  // Add an event listener for live search input
+  const searchBox = document.getElementById('search-box');
+  searchBox.addEventListener('input', filterEpisodes);
 
-function makeListOfEpisodeToSelect(allEpisodes) {
-  const episodeOptionList = allEpisodes.map(createEpisodeToSelect);
-  episodeSelector.append(...episodeOptionList);
-}
-
-function createEpisodeToSelect(episode) {
-  const episodeOption = document.createElement("option");
-  episodeOption.value = episode.name;
-  const formattedSeason = `S${addZero(episode.season)}`;
-  const formattedEpisode = `E${addZero(episode.number)}`;
-  const episodeName = episode.name;
-  episodeOption.textContent = `${formattedSeason}${formattedEpisode} - ${episodeName}`;
-
-  return episodeOption;
-}
-
-//====================Filter by Drop Down Select Feature=========================
-function filterEpisodeUsingDropDown(event) {
-  const selectedEpisodeName = event.target.value.toLowerCase();
-  const episodeListItems = document.querySelectorAll(".card");
-  episodeListItems.forEach((episode) => {
-    const episodeText = episode.textContent.toLocaleLowerCase();
-    if (episodeText.includes(selectedEpisodeName)) {
-      episode.style.display = "block";
-    } else {
-      episode.style.display = "none";
-    }
-  });
-}
-//event lister for drop down option selection
-episodeSelector.addEventListener("change", (event) => {
-  filterEpisodeUsingDropDown(event);
+  // Add an event listener for episode selection from the dropdown
+  const episodeSelector = document.getElementById('episode-selector');
+  episodeSelector.addEventListener('change', handleEpisodeSelection);
 });
-//=========================================================
-
-window.onload = setup;
