@@ -72,3 +72,52 @@ function filterEpisodeBySearch(episodeListItems, liveSearchInput) {
     }
   });
 }
+const episodeSelectorTemplate = document.querySelector(
+  "#episode-selector-temp"
+);
+const episodeSelectorTemplateClone =
+  episodeSelectorTemplate.content.cloneNode(true);
+//insert selector template before live search
+document.body.insertBefore(
+  episodeSelectorTemplateClone,
+  document.querySelector("#live-search")
+);
+
+const episodeSelector = document.querySelector("#episode-selector");
+
+function makeListOfEpisodeToSelect(allEpisodes) {
+  const episodeOptionList = allEpisodes.map(createEpisodeToSelect);
+  episodeSelector.append(...episodeOptionList);
+}
+
+function createEpisodeToSelect(episode) {
+  const episodeOption = document.createElement("option");
+  episodeOption.value = episode.name;
+  const formattedSeason = `S${addZero(episode.season)}`;
+  const formattedEpisode = `E${addZero(episode.number)}`;
+  const episodeName = episode.name;
+  episodeOption.textContent = `${formattedSeason}${formattedEpisode} - ${episodeName}`;
+
+  return episodeOption;
+}
+
+//====================Filter by Drop Down Select Feature=========================
+function filterEpisodeUsingDropDown(event) {
+  const selectedEpisodeName = event.target.value.toLowerCase();
+  const episodeListItems = document.querySelectorAll(".card");
+  episodeListItems.forEach((episode) => {
+    const episodeText = episode.textContent.toLocaleLowerCase();
+    if (episodeText.includes(selectedEpisodeName)) {
+      episode.style.display = "block";
+    } else {
+      episode.style.display = "none";
+    }
+  });
+}
+//event lister for drop down option selection
+episodeSelector.addEventListener("change", (event) => {
+  filterEpisodeUsingDropDown(event);
+});
+//=========================================================
+
+window.onload = setup;

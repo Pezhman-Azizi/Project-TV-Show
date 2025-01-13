@@ -16,11 +16,16 @@
       </div>
   </header>
 
-  <main class="container">
-      <div id="episodes-grid" class="episodes-grid">
-          <!-- Episodes will be inserted here -->
-      </div>
-  </main>
+ <template id="episode-selector-temp">
+      <select name="episode-selector" id="episode-selector">
+        <option value="">All episodes</option>
+      </select>
+    </template>
+    <label for="live-search"></label>
+      <input type="text" name="live-search" id="live-search">
+      <span id="episode-match-number"></span>
+    <div id="root">
+    </div>
 
   <footer>
       <div class="container">
