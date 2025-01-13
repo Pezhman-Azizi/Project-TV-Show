@@ -48,3 +48,10 @@ function createEpisodeCard (episode){
     <p>${episode.summary}</p>`;
   return newCard;
 }
+function displayMatchingEpisodes() {
+  const liveSearchInput = document.querySelector("#live-search");
+  const episodeListItems = document.querySelectorAll(".card");
+  liveSearchInput.addEventListener("input", () => {
+    filterEpisodeBySearch(episodeListItems, liveSearchInput);
+  });
+}
