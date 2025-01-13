@@ -32,6 +32,60 @@ header h1 {
   font-weight: 700;
 }
 
+/* Search Box */
+#search-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 5px 5px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+#search-box:focus {
+  border-color: #3498db;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  outline: none;
+  background-color: #fff;
+}
+
+#search-box::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Episode Selector */
+#episode-selector {
+  width: 100%;
+  max-width: 400px;
+  padding: 5px 5px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 1rem;
+  color: #a4a4a4;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px;
+  transition: all 0.3s ease;
+}
+
+#episode-selector:focus {
+  border-color: #3498db;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  outline: none;
+  background-color: #fff;
+}
+
+
 /* Episodes Grid */
 .episodes-grid {
   display: grid;
