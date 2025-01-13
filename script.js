@@ -38,3 +38,13 @@ function setup(){
         return num < 10 ? `0${num}` : num;
     }
 }
+function createEpisodeCard (episode){
+    const NewCard = document.createElement("div");
+    newCard.classList.add("card");
+    newCard.innerHTML = `<div class = "title-card">${episode.name} - S${addZero(
+    episode.season
+  )}E${addZero(episode.number)}</div>;
+    <img src="${episode.image.medium}" alt="${episode.name}" />
+    <p>${episode.summary}</p>`;
+  return newCard;
+}
