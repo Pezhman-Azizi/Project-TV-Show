@@ -27,30 +27,14 @@ function displayEpisodes() {
 
 document.addEventListener('DOMContentLoaded', displayEpisodes);
 
-function populateDropdown(episodes) {
-    const episodeSelector = document.getElementById('episode-selector');
-    episodeSelector.innerHTML = `<option value="">Select an Episode</option>` +
-        episodes.map(episode => {
-            const episodeNumber = `S${padNumber(episode.season)}E${padNumber(episode.number)}`;
-            return `<option value="${episode.id}">${episodeNumber} - ${episode.name}</option>`;
-        }).join('');
+function setup(){
+    const getAllEpisodes = getAllEpisodes();
+    makePageForEpisodes(getAllEpisodes);
+
+    displayMatchingEpisodes();
+    makeListOfEpisodeToSelect(getAllEpisodes);
+
+    function addZero(num){
+        return num < 10 ? `0${num}` : num;
+    }
 }
-function handleEpisodeSelection(episodes) {
-    const episodeSelector = document.getElementById('episode-selector');
-    episodeSelector.addEventListener('change', (event) => {
-        const selectedEpisodeId = event.target.value;
-        if (selectedEpisodeId) {
-            const selectedEpisode = episodes.find(ep => ep.id.toString() === selectedEpisodeId);
-            displayFilteredEpisodes([selectedEpisode]);
-        } else {
-            displayFilteredEpisodes(episodes);
-        }
-    });
-}
-document.addEventListener('DOMContentLoaded', () => {
-    const episodes = getAllEpisodes();
-    displayEpisodes(episodes);
-    populateDropdown(episodes);
-    handleSearch(episodes);
-    handleEpisodeSelection(episodes);
-});
