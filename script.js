@@ -1,5 +1,6 @@
 let allEpisodes = []; // Store all episodes globally for reuse throughout the script
-
+let allShows =[];
+let showEpisodesCache ={};
 // Utility function to pad numbers with leading zeros (e.g., 1 becomes 01)
 function padNumber(number) {
   return number.toString().padStart(2, '0');
