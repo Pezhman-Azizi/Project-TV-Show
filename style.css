@@ -33,7 +33,7 @@ header h1 {
 }
 
 /* Search Box */
-#search-box,  #show-selector{
+#search-box {
   width: 100%;
   max-width: 400px;
   padding: 5px 5px;
@@ -45,18 +45,6 @@ header h1 {
   background-color: #f9f9f9;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-}
-
-#show-selector:focus {
-border-color: #3498db;
-  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-  outline: none;
-  background-color: #fff;
-
-}
-#show-selector::placeholder{
-  color: #aaa;
-  font-style: italic;
 }
 
 #search-box:focus {
@@ -206,6 +194,4 @@ footer {
       grid-template-columns: 1fr;
       gap: 1rem;
   }
-
-
 }
