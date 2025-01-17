@@ -9,29 +9,35 @@
   </head>
 
   <body>
-
     <header>
       <div class="container">
-          <h1>TV Series Episodes</h1>
-          <input type="text" id="search-box" placeholder="Search episodes..." />
-          <select id="episode-selector">
-            <option value="">Select an Episode</option>
-          </select>
-          <p id="search-result"></p>
+        <h1>TV Series and Shows</h1>
+        <input type="text" id="search-box" placeholder="Search shows..." />
+        <select id="show-selector">
+          <option value="">Select a Show</option>
+          <!-- Show options will be populated dynamically -->
+        </select>
+        <select id="episode-selector" style="display: none;">
+          <option value="">Select an Episode</option>
+        </select>
+        <p id="search-result"></p>
       </div>
-  </header>
+    </header>
 
-  <main class="container">
-      <div id="episodes-grid" class="episodes-grid">
-          <!-- Episodes will be inserted here -->
+    <main class="container">
+      <div id="shows" class="shows-container">
+        <!-- Shows will be dynamically inserted here -->
       </div>
-  </main>
+      <div id="episodes-grid" class="episodes-grid" style="display: none;">
+        <!-- Episodes will be dynamically inserted here -->
+      </div>
+    </main>
 
-  <footer>
+    <footer>
       <div class="container">
-          <p>&copy; 2024 TV Series Episodes. All rights reserved.</p>
+        <p>&copy; 2024 TV Series and Shows. All rights reserved.</p>
       </div>
-  </footer>
+    </footer>
     <script src="script.js"></script>
   </body>
 </html>
