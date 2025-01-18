@@ -70,7 +70,10 @@ function renderShows(showsToDisplay) {
   const episodeSelector = document.getElementById('episode-selector');
 
   if (backButton) backButton.style.display = 'none';
-  if (resultSpan) resultSpan.textContent = '';
+  if (resultSpan) {
+    resultSpan.style.display = 'none';
+    resultSpan.textContent = '';
+  }
   if (episodeSelector) episodeSelector.style.display = 'none';
 
   showsContainer.addEventListener('click', handleShowClick);
@@ -124,18 +127,21 @@ function renderEpisodes(episodesToDisplay) {
   });
 
   const resultSpan = document.getElementById('search-result');
-  resultSpan.textContent = `Displaying ${episodesToDisplay.length} episode(s).`;
+  resultSpan.style.display = 'inline';
+  resultSpan.textContent = `Displaying ${episodesToDisplay.length}  episodes`;
 
   let backButton = document.getElementById('back-to-shows');
   if (!backButton) {
     backButton = document.createElement('button');
     backButton.id = 'back-to-shows';
+    backButton.classList.add("back-show");
+
     backButton.textContent = 'Back to Shows';
     backButton.addEventListener('click', () => {
       document.getElementById('shows').style.display = 'grid';
       document.getElementById('episodes-grid').style.display = 'none';
       episodeSelector.style.display = 'none';
-      resultSpan.textContent = '';
+      resultSpan.style.display = 'none';
       backButton.style.display = 'none';
     });
     episodeSelector.after(backButton);
@@ -194,5 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const resultSpan = document.createElement('span');
   resultSpan.id = 'search-result';
+  resultSpan.style.display = 'none';
   document.getElementById('episode-selector').after(resultSpan);
 });
